@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1015" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Seattle to Charlotte Tesla road trip plan, day by day.">
+<title>SEA to CLT Roadbook</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --surface:#ffffff; --soft:#f0f2f5;
+    --ink:#15191f; --ink-2:#525c68; --ink-3:#828c98;
+    --line:#e2e6eb; --line-2:#eceff3;
+    --accent:#2f6bd6; --accent-soft:#e6eefb;
+    --warn:#b8541c; --warn-soft:#f9ece2;
+    --good:#2c8a52; --good-soft:#e2f2e8;
+    --r:16px; --r-sm:10px;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0d1015; --surface:#161b22; --soft:#1b212a;
+      --ink:#eef2f7; --ink-2:#a3adb9; --ink-3:#6d7885;
+      --line:#262e39; --line-2:#1e2530;
+      --accent:#5b98ee; --accent-soft:#14253c;
+      --warn:#e0854a; --warn-soft:#2a1c11;
+      --good:#4cbc76; --good-soft:#12271b;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f5f7; --surface:#ffffff; --soft:#f0f2f5;
+    --ink:#15191f; --ink-2:#525c68; --ink-3:#828c98;
+    --line:#e2e6eb; --line-2:#eceff3;
+    --accent:#2f6bd6; --accent-soft:#e6eefb;
+    --warn:#b8541c; --warn-soft:#f9ece2; --good:#2c8a52; --good-soft:#e2f2e8;
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d1015; --surface:#161b22; --soft:#1b212a;
+    --ink:#eef2f7; --ink-2:#a3adb9; --ink-3:#6d7885;
+    --line:#262e39; --line-2:#1e2530;
+    --accent:#5b98ee; --accent-soft:#14253c;
+    --warn:#e0854a; --warn-soft:#2a1c11; --good:#4cbc76; --good-soft:#12271b;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+  h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.01em}
+  p{margin:0}
+  a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+  a:hover{text-decoration-thickness:2px}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+  /* header */
+  .hero{padding:52px 0 30px}
+  .hero .eyebrow{font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--accent);
+    text-transform:uppercase;margin-bottom:14px}
+  .hero h1{font-size:clamp(34px,7vw,52px);line-height:1.02;font-weight:800}
+  .hero .lead{margin-top:16px;color:var(--ink-2);font-size:18px;max-width:56ch}
+
+  .facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;flex:1;
+    min-width:130px}
+  .fact .n{font-size:23px;font-weight:750;line-height:1}
+  .fact .l{margin-top:5px;font-size:13px;color:var(--ink-3)}
+  .fact.free .n{color:var(--good)}
+
+  /* the route, plain list */
+  .overview{margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:8px 22px}
+  .stop{display:flex;align-items:baseline;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-2)}
+  .stop:last-child{border-bottom:0}
+  .stop .mk{flex-shrink:0;width:74px;font-size:13px;font-weight:700;color:var(--ink-3)}
+  .stop .mk.go{color:var(--accent)} .stop .mk.end{color:var(--good)}
+  .stop .city{font-size:17px;font-weight:650}
+  .stop .why{margin-left:auto;font-size:14px;color:var(--ink-3);text-align:right}
+
+  /* sections */
+  section{margin-top:48px;scroll-margin-top:20px}
+  .sec-h{font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);
+    margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+
+  /* day card */
+  .day{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 24px 20px;
+    margin-bottom:16px;transition:opacity .25s ease}
+  .day.done{opacity:.5}
+  .day .dhead{display:flex;align-items:flex-start;gap:14px}
+  .day .dtag{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.03em;flex-shrink:0;
+    background:var(--accent-soft);padding:4px 10px;border-radius:8px;margin-top:3px}
+  .day h3{font-size:22px;font-weight:750;flex:1;min-width:0}
+  .day .check{flex-shrink:0;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3);
+    cursor:pointer;user-select:none;background:none;border:0;padding:4px}
+  .day .check .bx{width:22px;height:22px;border-radius:7px;border:2px solid var(--line);display:grid;
+    place-items:center;transition:all .15s ease}
+  .day .check .bx svg{width:13px;height:13px;opacity:0;transition:opacity .15s ease}
+  .day.done .check .bx{background:var(--good);border-color:var(--good)}
+  .day.done .check .bx svg{opacity:1}
+  .day.done .check{color:var(--good)}
+
+  .rows{margin-top:18px;display:flex;flex-direction:column;gap:0}
+  .line{display:grid;grid-template-columns:96px 1fr;gap:16px;padding:13px 0;border-top:1px solid var(--line-2)}
+  .line:first-child{border-top:0}
+  @media(max-width:520px){.line{grid-template-columns:1fr;gap:4px;padding:12px 0}}
+  .line .lab{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+    padding-top:2px}
+  .line .val{font-size:16px;color:var(--ink)}
+  .line .val b{font-weight:700}
+  .line .val .sub{color:var(--ink-3);font-size:14px}
+  .line.watch .lab{color:var(--warn)}
+  .line.watch .val{color:var(--ink-2)}
+  .line.tz .lab{color:var(--accent)}
+
+  /* plain info sections */
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;
+    margin-bottom:16px}
+  .panel h3{font-size:19px;font-weight:750;margin-bottom:6px}
+  .panel p{color:var(--ink-2);font-size:16px}
+  .panel ul{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+  .panel li{position:relative;padding-left:22px;font-size:16px}
+  .panel li::before{content:"";position:absolute;left:4px;top:10px;width:7px;height:7px;border-radius:99px;
+    background:var(--accent)}
+  .panel li b{font-weight:700}
+  .cost{color:var(--good);font-weight:700}
+  .flag{color:var(--warn);font-weight:650}
+  .callout{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 25%,transparent);
+    border-radius:var(--r-sm);padding:16px 18px;margin-top:4px}
+  .callout b{color:var(--warn)}
+  .callout p{color:var(--ink);font-size:16px}
+
+  /* money table */
+  .money{width:100%;border-collapse:collapse;font-size:16px}
+  .money td{padding:12px 0;border-bottom:1px solid var(--line-2)}
+  .money tr:last-child td{border-bottom:0;font-weight:750;font-size:17px;padding-top:15px}
+  .money td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .money .free td:last-child{color:var(--good)}
+
+  /* checklist */
+  .clist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 18px}
+  @media(max-width:520px){.clist{grid-template-columns:1fr}}
+  .clist li{padding:0}
+  .chk{display:flex;align-items:flex-start;gap:12px;padding:11px 10px;border-radius:9px;cursor:pointer;
+    user-select:none}
+  .chk:hover{background:var(--soft)}
+  .chk .bx{width:22px;height:22px;border-radius:7px;border:2px solid var(--line);flex-shrink:0;margin-top:1px;
+    display:grid;place-items:center;transition:all .15s ease}
+  .chk .bx svg{width:13px;height:13px;opacity:0;transition:opacity .15s ease}
+  .chk.on .bx{background:var(--good);border-color:var(--good)}
+  .chk.on .bx svg{opacity:1}
+  .chk .t{font-size:15.5px}
+  .chk.on .t{color:var(--ink-3);text-decoration:line-through}
+  .clist-h{font-size:14px;font-weight:750;margin:20px 0 6px;grid-column:1/-1}
+  .clist-h:first-child{margin-top:0}
+
+  /* check-in and tracking */
+  .checkin{display:none;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-2)}
+  .day.done .checkin{display:block}
+  .notify{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:650;color:#fff;
+    background:var(--good);border:0;border-radius:10px;padding:11px 16px;cursor:pointer}
+  .notify:hover{filter:brightness(1.06)}
+  .track .field{display:flex;flex-direction:column;gap:6px;margin-top:16px}
+  .track label{font-size:14px;font-weight:650}
+  .track input{font:inherit;font-size:16px;padding:12px 13px;border:1px solid var(--line);border-radius:10px;
+    background:var(--bg);color:var(--ink)}
+  .btn-primary{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:16px;font-weight:700;
+    color:#fff;background:var(--accent);border:0;border-radius:11px;padding:13px 20px;cursor:pointer;margin-top:18px}
+  .btn-primary:hover{filter:brightness(1.06)}
+
+  footer{margin-top:44px;color:var(--ink-3);font-size:14px;line-height:1.6}
+  footer b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Solo Tesla trip &middot; sleeping in the car</div>
+    <h1>Seattle to Charlotte</h1>
+    <p class="lead">Five days of driving. You leave at 3:00 AM each morning and drive 10 hours.
+      No toll roads, charge on Superchargers, sleep in the car.</p>
+
+    <div class="facts">
+      <div class="fact"><div class="n">~2,975 mi</div><div class="l">Total drive</div></div>
+      <div class="fact"><div class="n">5 days</div><div class="l">On the road</div></div>
+      <div class="fact free"><div class="n">$0</div><div class="l">In tolls</div></div>
+    </div>
+
+    <div class="overview">
+      <div class="stop"><span class="mk go">START</span><span class="city"><a href="https://www.google.com/maps/search/?api=1&amp;query=Seattle%2C%20WA" target="_blank" rel="noopener">Seattle, WA</a></span>
+        <span class="why">3:00 AM, Day 1</span></div>
+      <div class="stop"><span class="mk">NIGHT 1</span><span class="city"><a href="https://www.google.com/maps/search/?api=1&amp;query=Butte%2C%20MT" target="_blank" rel="noopener">Butte, MT</a></span>
+        <span class="why">~600 mi</span></div>
+      <div class="stop"><span class="mk">NIGHT 2</span><span class="city"><a href="https://www.google.com/maps/search/?api=1&amp;query=Rapid%20City%2C%20SD" target="_blank" rel="noopener">Rapid City, SD</a></span>
+        <span class="why">~600 mi</span></div>
+      <div class="stop"><span class="mk">NIGHT 3</span><span class="city"><a href="https://www.google.com/maps/search/?api=1&amp;query=St%20Joseph%2C%20MO" target="_blank" rel="noopener">St. Joseph, MO</a></span>
+        <span class="why">~665 mi</span></div>
+      <div class="stop"><span class="mk">NIGHT 4</span><span class="city"><a href="https://www.google.com/maps/search/?api=1&amp;query=Lexington%2C%20KY" target="_blank" rel="noopener">Lexington, KY</a></span>
+        <span class="why">~645 mi</span></div>
+      <div class="stop"><span class="mk end">ARRIVE</span><span class="city"><a href="https://www.google.com/maps/search/?api=1&amp;query=Charlotte%2C%20NC" target="_blank" rel="noopener">Charlotte, NC</a></span>
+        <span class="why">~465 mi</span></div>
+    </div>
+  </header>
+
+  <!-- DAYS -->
+  <section>
+    <div class="sec-h">The five days</div>
+
+    <!-- DAY 1 -->
+    <article class="day" data-day="1">
+      <div class="dhead">
+        <span class="dtag">DAY 1</span>
+        <h3>Seattle to Butte, MT</h3>
+        <button class="check" data-check="1"><span class="bx"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Done</button>
+      </div>
+      <div class="rows">
+        <div class="line"><div class="lab">Drive</div><div class="val"><b>~600 miles on I-90 East.</b>
+          Leave at 3:00 AM.</div></div>
+        <div class="line"><div class="lab">Charge</div><div class="val">Stop in <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%205280%20Grant%20Creek%20Rd%20Missoula%20MT" target="_blank" rel="noopener"><b>Missoula, MT</b></a>
+          on the way. <span class="sub">Charge full in Butte for the night.</span></div></div>
+        <div class="line"><div class="lab">Sleep</div><div class="val"><a href="https://www.google.com/maps/search/?api=1&amp;query=Walmart%203901%20Harrison%20Ave%20Butte%20MT" target="_blank" rel="noopener"><b>Walmart, 3901 Harrison Ave, Butte.</b></a>
+          <span class="sub">About 1 mile from the charger.</span></div></div>
+        <div class="line"><div class="lab">Shower</div><div class="val">Planet Fitness in Butte, or a
+          truck stop on I-90.</div></div>
+        <div class="line watch"><div class="lab">Watch out</div><div class="val">Mountain passes drain the
+          battery faster. Arrive at the last charger before a climb with plenty of range.</div></div>
+        <div class="line tz"><div class="lab">Clock</div><div class="val">You lose 1 hour entering
+          Mountain time.</div></div>
+      </div>
+    </article>
+
+    <!-- DAY 2 -->
+    <article class="day" data-day="2">
+      <div class="dhead">
+        <span class="dtag">DAY 2</span>
+        <h3>Butte to Rapid City, SD</h3>
+        <button class="check" data-check="2"><span class="bx"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Done</button>
+      </div>
+      <div class="rows">
+        <div class="line"><div class="lab">Drive</div><div class="val"><b>~600 miles on I-90 East</b>
+          through Wyoming. Leave at 3:00 AM.</div></div>
+        <div class="line"><div class="lab">Charge</div><div class="val">Stop in <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%201801%20Majestic%20Ln%20Billings%20MT" target="_blank" rel="noopener"><b>Billings, MT</b></a> and
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%20Gillette%20WY" target="_blank" rel="noopener"><b>Gillette, WY.</b></a> <span class="sub">Do not skip Gillette, chargers are far apart here.</span></div></div>
+        <div class="line"><div class="lab">Sleep</div><div class="val"><a href="https://www.google.com/maps/search/?api=1&amp;query=Walmart%20Supercenter%20Rapid%20City%20SD" target="_blank" rel="noopener"><b>Walmart in Rapid City.</b></a>
+          <span class="sub">Open 24 hours, overnight friendly.</span></div></div>
+        <div class="line"><div class="lab">Shower</div><div class="val">Planet Fitness in Rapid City.</div></div>
+        <div class="line watch"><div class="lab">Watch out</div><div class="val">This is the thinnest stretch
+          for charging. Charge full at every stop. Strong crosswinds can cut your range, so keep extra.</div></div>
+      </div>
+    </article>
+
+    <!-- DAY 3 -->
+    <article class="day" data-day="3">
+      <div class="dhead">
+        <span class="dtag">DAY 3</span>
+        <h3>Rapid City to St. Joseph, MO</h3>
+        <button class="check" data-check="3"><span class="bx"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Done</button>
+      </div>
+      <div class="rows">
+        <div class="line"><div class="lab">Drive</div><div class="val"><b>~665 miles.</b> I-90 East, then
+          I-29 South at Sioux Falls. <span class="sub">This is the longest day.</span></div></div>
+        <div class="line"><div class="lab">Charge</div><div class="val">Stop in <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%20302%20W%205th%20St%20Murdo%20SD" target="_blank" rel="noopener"><b>Murdo</b></a> and
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%20Mitchell%20SD" target="_blank" rel="noopener"><b>Mitchell, SD.</b></a> <span class="sub">Charge full, it is open prairie between them.</span></div></div>
+        <div class="line"><div class="lab">Sleep</div><div class="val"><a href="https://www.google.com/maps/search/?api=1&amp;query=Walmart%204201%20N%20Belt%20Hwy%20St%20Joseph%20MO" target="_blank" rel="noopener"><b>Walmart, 4201 N Belt Hwy, St. Joseph.</b></a>
+          <span class="sub">Call the store first to be safe.</span></div></div>
+        <div class="line"><div class="lab">Shower</div><div class="val">Planet Fitness in St. Joseph, or a
+          truck stop on I-29.</div></div>
+        <div class="line watch"><div class="lab">Watch out</div><div class="val">Longest day plus you lose an
+          hour. Protect your early start and keep breaks short.</div></div>
+        <div class="line tz"><div class="lab">Clock</div><div class="val">You lose 1 hour entering
+          Central time.</div></div>
+      </div>
+    </article>
+
+    <!-- DAY 4 -->
+    <article class="day" data-day="4">
+      <div class="dhead">
+        <span class="dtag">DAY 4</span>
+        <h3>St. Joseph to Lexington, KY</h3>
+        <button class="check" data-check="4"><span class="bx"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Done</button>
+      </div>
+      <div class="rows">
+        <div class="line"><div class="lab">Drive</div><div class="val"><b>~645 miles.</b> Through St. Louis
+          on I-70, then I-64 East. Leave at 3:00 AM.</div></div>
+        <div class="line"><div class="lab">Charge</div><div class="val">Stop in <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%20652%20N%20Rangeline%20Columbia%20MO" target="_blank" rel="noopener"><b>Columbia, MO</b></a> and
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%209500%20Preston%20Hwy%20Louisville%20KY" target="_blank" rel="noopener"><b>Louisville, KY.</b></a></div></div>
+        <div class="line"><div class="lab">Sleep</div><div class="val"><a href="https://www.google.com/maps/search/?api=1&amp;query=Walmart%20Supercenter%20Lexington%20KY" target="_blank" rel="noopener"><b>A 24-hour Walmart in Lexington.</b></a>
+          <span class="sub">Confirm the store allows it when you arrive.</span></div></div>
+        <div class="line"><div class="lab">Shower</div><div class="val">Planet Fitness in Lexington.</div></div>
+        <div class="line tz"><div class="lab">Clock</div><div class="val">You lose 1 hour entering
+          Eastern time, in Indiana.</div></div>
+      </div>
+    </article>
+
+    <!-- DAY 5 -->
+    <article class="day" data-day="5">
+      <div class="dhead">
+        <span class="dtag">DAY 5</span>
+        <h3>Lexington to Charlotte, NC</h3>
+        <button class="check" data-check="5"><span class="bx"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Done</button>
+      </div>
+      <div class="rows">
+        <div class="line"><div class="lab">Drive</div><div class="val"><b>~465 miles.</b> I-75 South to
+          Knoxville, I-40 East to Asheville, then I-77 South. <span class="sub">Shortest day, you are almost home.</span></div></div>
+        <div class="line"><div class="lab">Charge</div><div class="val">Stop in <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%20250%20Brookview%20Centre%20Way%20Knoxville%20TN" target="_blank" rel="noopener"><b>Knoxville, TN</b></a> and
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%20800%20Brevard%20Rd%20Asheville%20NC" target="_blank" rel="noopener"><b>Asheville, NC.</b></a> <span class="sub">Asheville gets you all the way to Charlotte.</span></div></div>
+        <div class="line watch"><div class="lab">Watch out</div><div class="val">Near Charlotte, stay in the
+          normal lanes on I-77. The Express Lanes cost a toll.</div></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- FOLLOW ALONG -->
+  <section>
+    <div class="sec-h">Let people follow along</div>
+    <div class="panel track">
+      <h3>Check in when you finish a day</h3>
+      <p>Add a contact once. Then each day you mark done, a green button appears to text them that you made it,
+        and where you are. It works from your phone with the plan open.</p>
+      <div class="field">
+        <label for="ec">Contact number (optional)</label>
+        <input id="ec" type="tel" inputmode="tel" placeholder="e.g. 555 123 4567" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="loc">Your live-location link (optional)</label>
+        <input id="loc" type="url" inputmode="url" placeholder="paste your Google Maps or Find My share link" autocomplete="off">
+      </div>
+      <button class="btn-primary" id="sendNow">Send my current status</button>
+      <p style="margin-top:14px;font-size:14px;color:var(--ink-3)">On your phone this opens the share sheet, so
+        you can send it by text, WhatsApp, or anything else, and pick who gets it.</p>
+    </div>
+    <div class="panel track">
+      <h3>For true live location, use a real app</h3>
+      <p>A web page cannot track you in the background, and this route has long dead zones in Montana, Wyoming,
+        and the Dakotas where phones lose signal. Set one of these up before you leave:</p>
+      <ul>
+        <li><b>Google Maps location sharing</b> or <b>Apple Find My.</b> Share with your contact for the whole
+          trip. They catch up automatically when signal returns.</li>
+        <li><span class="flag">For the empty stretches, only a satellite messenger truly works,</span> like a
+          Garmin inReach or Zoleo. Worth it so someone can reach you where there are no bars.</li>
+      </ul>
+      <p style="margin-top:6px;font-size:14px;color:var(--ink-3)">In the Google Maps app: tap your profile
+        picture, then Location sharing, then share with your contact until you arrive. Paste that link in the
+        box above so it rides along with every check-in.</p>
+    </div>
+  </section>
+
+  <!-- SHOWERS -->
+  <section>
+    <div class="sec-h">Where you shower</div>
+    <div class="panel">
+      <h3>Get a Planet Fitness Black Card</h3>
+      <p>This is the easy answer. Buy one before you leave, about <span class="cost">$74</span> for the whole
+        trip, then cancel after. It works at every Planet Fitness in the country, and every city on your
+        route has one.</p>
+      <ul>
+        <li><b>You need your own card.</b> You cannot walk in as a free guest on your own.</li>
+        <li><b>Bring your own towel, soap, and a lock.</b> They do not provide them.</li>
+        <li>Check the app the night before to make sure that club is open when you arrive.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Or use a truck stop</h3>
+      <p>Good backup in the empty stretches of Montana, Wyoming, and the Dakotas. Pilot, Love's, and TA
+        have showers right off the highway.</p>
+      <ul>
+        <li><b>About $12 to $15</b>, paid in cash at the front desk. You do not need to buy fuel.</li>
+        <li>It is a <b>private, locked room</b> and the price includes a clean towel and soap.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SLEEPING -->
+  <section>
+    <div class="sec-h">Sleeping in the car</div>
+    <div class="panel">
+      <h3>Use Camp Mode</h3>
+      <p>Camp Mode keeps the air and power on all night and shuts off at 20% so you never wake up stranded.
+        It uses about <b>10 to 15% of your battery overnight</b>, a bit more in summer heat.</p>
+      <ul>
+        <li><b>Park each night with at least 50% left.</b> That covers the night plus your morning drive to
+          the next charger.</li>
+        <li><b>Never sleep parked at a Supercharger.</b> You get charged extra fees and block other people.
+          Charge up, then move to the Walmart.</li>
+        <li>Keep a blanket or sleeping bag as backup so you are not stuck running the heat.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Where it is okay to park overnight</h3>
+      <ul>
+        <li><b>Walmart</b> is the usual spot, but it changes by store. <span class="flag">Call the store
+          first.</span></li>
+        <li><b>Cracker Barrel, Cabela's, and truck stops</b> are good backups. At truck stops, park in the
+          car spots, not the big truck lanes.</li>
+        <li>Do <b>not</b> sleep at highway rest areas in South Dakota, Kentucky, Tennessee, North Carolina,
+          or Illinois. It is not allowed there.</li>
+        <li>Back into a well-lit spot near the entrance. If a place feels wrong, just move.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- GOOD TO KNOW -->
+  <section>
+    <div class="sec-h">Good to know before you go</div>
+    <div class="panel">
+      <div class="callout"><p><b>The clock.</b> Driving east you lose 3 hours over the trip. On Days 1, 3,
+        and 4 you cross into a new time zone. A 3:00 AM start plus 10 hours puts you in closer to 5:00 PM
+        those days, not 4:00. Set your phone to update the time automatically.</p></div>
+      <ul style="margin-top:18px">
+        <li><b>Tiredness is the real risk.</b> Five long solo days is hard. Take a break every 2 hours, and
+          if you get sleepy, nap. A Supercharger is a safe place to close your eyes. Arriving a day late is
+          fine.</li>
+        <li><b>Summer heat and storms.</b> It is July across the plains. Watch the weather for hail and
+          tornado warnings, keep water in the car, and park in shade at night.</li>
+        <li><b>Move at every stop.</b> Sitting 10 hours a day for a week is hard on your body. Walk and
+          stretch each time you charge.</li>
+        <li><b>Bring your papers.</b> License, insurance, and registration, plus a photo of each on your
+          phone. Save the Tesla roadside number too. There is no spare tire, so pack a plug kit.</li>
+        <li><b>Pack food.</b> A small cooler with ice saves money and keeps you feeling better than
+          gas-station snacks.</li>
+        <li><b>You will lose cell signal</b> in rural Montana, Wyoming, and the Dakotas. Download offline
+          maps for the whole route before you leave.</li>
+        <li><b>Leave room for slack.</b> Day 5 is short on purpose. Keep enough for one motel night in case
+          you need a real bed.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MONEY -->
+  <section>
+    <div class="sec-h">Rough cost</div>
+    <div class="panel">
+      <table class="money">
+        <tr><td>Charging the whole way</td><td>$250 to $360</td></tr>
+        <tr><td>Showers (Planet Fitness card)</td><td>~$74</td></tr>
+        <tr class="free"><td>Sleeping (in the car)</td><td>$0</td></tr>
+        <tr class="free"><td>Tolls</td><td>$0</td></tr>
+        <tr><td>Total, before food</td><td>~$325 to $435</td></tr>
+      </table>
+      <p style="margin-top:16px;font-size:15px">Food and coffee are on top of this. Charging cost depends on
+        prices along the way, so treat it as a rough number.</p>
+    </div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section>
+    <div class="sec-h">Before you leave</div>
+    <div class="panel">
+      <ul class="clist" id="clist"></ul>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>A few reminders.</b> Chargers here come from Tesla's list, but let the car's own map plan charging
+    on the day, it adjusts for weather and traffic. Call Walmart stores ahead about overnight parking, since
+    it changes by location. Confirm the Planet Fitness price and hours in the app. And remember the 3:00 AM
+    starts mean driving in the dark, so watch for deer, and stop if you get tired.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+  function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  var CHK='<svg viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  /* contact + status */
+  var CITY=["","Butte, MT","Rapid City, SD","St. Joseph, MO","Lexington, KY","Charlotte, NC"];
+  var contact=load("sea_clt_contact",{});
+  var ecInput=document.getElementById("ec"), locInput=document.getElementById("loc");
+  if(ecInput){
+    ecInput.value=contact.ec||""; if(locInput)locInput.value=contact.loc||"";
+    var saveContact=function(){
+      contact={ec:ecInput.value.trim(),loc:locInput?locInput.value.trim():""};
+      save("sea_clt_contact",contact);
+    };
+    ecInput.addEventListener("input",saveContact);
+    if(locInput)locInput.addEventListener("input",saveContact);
+  }
+  function nowStr(){try{return new Date().toLocaleString([],{weekday:"short",hour:"numeric",minute:"2-digit"});}catch(e){return "";}}
+  function buildMsg(dayNum){
+    var msg=dayNum>0
+      ? "Road trip check-in: Day "+dayNum+" done, I made it to "+CITY[dayNum]+". All good. ("+nowStr()+")"
+      : "Road trip check-in: on the road, all good. ("+nowStr()+")";
+    var loc=(contact.loc||"").trim();
+    if(loc)msg+=" Live location: "+loc;
+    return msg;
+  }
+  function sendMsg(msg){
+    if(navigator.share){navigator.share({text:msg}).catch(function(){});return;}
+    var num=(contact.ec||"").replace(/[^0-9+]/g,"");
+    window.location.href="sms:"+num+"?&body="+encodeURIComponent(msg);
+  }
+
+  /* day done + per-day check-in */
+  var days=load("sea_clt_days",{});
+  document.querySelectorAll(".day").forEach(function(d){
+    var id=parseInt(d.getAttribute("data-day"),10);
+    if(days[id])d.classList.add("done");
+    var btn=d.querySelector(".check");
+    btn.addEventListener("click",function(){
+      days[id]=!days[id]; d.classList.toggle("done",!!days[id]); save("sea_clt_days",days);
+    });
+    var ci=document.createElement("div"); ci.className="checkin";
+    var nb=document.createElement("button"); nb.type="button"; nb.className="notify";
+    nb.textContent="Text that I reached "+CITY[id];
+    nb.addEventListener("click",function(){sendMsg(buildMsg(id));});
+    ci.appendChild(nb); d.appendChild(ci);
+  });
+  var sendNow=document.getElementById("sendNow");
+  if(sendNow)sendNow.addEventListener("click",function(){
+    var m=0; for(var i=1;i<=5;i++){if(days[i])m=i;} sendMsg(buildMsg(m));
+  });
+
+  /* checklist */
+  var ITEMS=[
+    {h:"Pack"},
+    "Window sunshades (privacy and shade)","Blanket or sleeping bag and a pillow",
+    "Planet Fitness Black Card","Towel, soap, and a lock","Small cooler, water, and food",
+    "Phone mount and cables","Tire plug kit and an air pump","First-aid kit and any medicine",
+    {h:"Set up"},
+    "Download offline maps for the whole route","Save the 4 overnight stops in the car",
+    "Install the Planet Fitness app","Papers in the car: license, insurance, registration",
+    "Save the Tesla roadside number","Share live location with a contact (Google Maps or Find My)",
+    "Add your contact in the check-in box on this page","Set phone to update time zone automatically",
+    "Check tires and top off wiper fluid","Charge the car to 90% the night before"
+  ];
+  var state=load("sea_clt_check",{}), list=document.getElementById("clist"), n=0;
+  ITEMS.forEach(function(it){
+    if(it.h){var h=document.createElement("div");h.className="clist-h";h.textContent=it.h;list.appendChild(h);return;}
+    var key="c"+(n++), li=document.createElement("li"),
+        row=document.createElement("div");
+    row.className="chk"+(state[key]?" on":"");
+    row.setAttribute("role","checkbox");row.setAttribute("tabindex","0");
+    row.setAttribute("aria-checked",state[key]?"true":"false");
+    row.innerHTML='<span class="bx">'+CHK+'</span><span class="t">'+it+'</span>';
+    function tog(){state[key]=!state[key];row.classList.toggle("on",state[key]);
+      row.setAttribute("aria-checked",state[key]?"true":"false");save("sea_clt_check",state);}
+    row.addEventListener("click",tog);
+    row.addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();tog();}});
+    li.appendChild(row);list.appendChild(li);
+  });
+})();
+</script>
+</body>
+</html>
