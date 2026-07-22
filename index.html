@@ -1,53 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0d1015" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff">
 <meta name="description" content="Seattle to Charlotte Tesla road trip plan, day by day.">
 <title>SEA to CLT Roadbook</title>
+<script>
+  /* apply saved theme before first paint, default light */
+  (function(){try{var t=localStorage.getItem("sea_clt_theme")||"";
+    document.documentElement.setAttribute("data-theme",t.indexOf("dark")>-1?"dark":"light");}catch(e){}})();
+</script>
 <style>
   :root{
-    --bg:#f4f5f7; --surface:#ffffff; --soft:#f0f2f5;
-    --ink:#15191f; --ink-2:#525c68; --ink-3:#828c98;
-    --line:#e2e6eb; --line-2:#eceff3;
-    --accent:#2f6bd6; --accent-soft:#e6eefb;
-    --warn:#b8541c; --warn-soft:#f9ece2;
-    --good:#2c8a52; --good-soft:#e2f2e8;
     --r:16px; --r-sm:10px;
+    --bar:64px;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
   }
-  @media (prefers-color-scheme:dark){
-    :root{
-      --bg:#0d1015; --surface:#161b22; --soft:#1b212a;
-      --ink:#eef2f7; --ink-2:#a3adb9; --ink-3:#6d7885;
-      --line:#262e39; --line-2:#1e2530;
-      --accent:#5b98ee; --accent-soft:#14253c;
-      --warn:#e0854a; --warn-soft:#2a1c11;
-      --good:#4cbc76; --good-soft:#12271b;
-    }
-  }
-  :root[data-theme="light"]{
-    --bg:#f4f5f7; --surface:#ffffff; --soft:#f0f2f5;
-    --ink:#15191f; --ink-2:#525c68; --ink-3:#828c98;
-    --line:#e2e6eb; --line-2:#eceff3;
-    --accent:#2f6bd6; --accent-soft:#e6eefb;
-    --warn:#b8541c; --warn-soft:#f9ece2; --good:#2c8a52; --good-soft:#e2f2e8;
+  /* light, the default */
+  :root,:root[data-theme="light"]{
+    color-scheme:light;
+    --bg:#ffffff; --surface:#ffffff; --soft:#f6f7f9;
+    --ink:#111418; --ink-2:#414a55; --ink-3:#69737f;
+    --line:#e3e6ea; --line-2:#eef0f3;
+    --accent:#1f5fd0; --accent-soft:#eaf1fd;
+    --warn:#9c4413; --warn-soft:#fbf0e8; --good:#1e7a45; --good-soft:#e6f4ec;
+    --shadow:0 1px 2px rgba(17,20,24,.04),0 1px 10px rgba(17,20,24,.03);
   }
   :root[data-theme="dark"]{
+    color-scheme:dark;
     --bg:#0d1015; --surface:#161b22; --soft:#1b212a;
     --ink:#eef2f7; --ink-2:#a3adb9; --ink-3:#6d7885;
     --line:#262e39; --line-2:#1e2530;
     --accent:#5b98ee; --accent-soft:#14253c;
     --warn:#e0854a; --warn-soft:#2a1c11; --good:#4cbc76; --good-soft:#12271b;
+    --shadow:none;
   }
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
-    font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+    font-size:17.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  body.menu-open{overflow:hidden}
   .wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
   h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.01em}
   p{margin:0}
@@ -56,15 +51,53 @@
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
 
+  /* sticky top bar */
+  .topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    -webkit-backdrop-filter:saturate(180%) blur(12px);backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+  .topbar .tb{max-width:760px;margin:0 auto;padding:0 12px;height:var(--bar);
+    display:flex;align-items:center;gap:10px}
+  .iconbtn{width:44px;height:44px;flex-shrink:0;display:grid;place-items:center;border-radius:12px;
+    background:none;border:1px solid transparent;color:var(--ink);cursor:pointer;padding:0}
+  .iconbtn:hover{background:var(--soft);border-color:var(--line)}
+  .iconbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round}
+  .tb .brand{font-size:15px;font-weight:750;letter-spacing:-.01em;flex:1;min-width:0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tb .brand span{color:var(--ink-3);font-weight:600}
+  #themeBtn .moon{display:none}
+  :root[data-theme="dark"] #themeBtn .moon{display:block}
+  :root[data-theme="dark"] #themeBtn .sun{display:none}
+
+  /* slide-open menu */
+  .scrim{position:fixed;inset:0;z-index:60;background:rgba(10,13,18,.45);opacity:0;visibility:hidden;
+    transition:opacity .22s ease,visibility .22s ease}
+  .scrim.open{opacity:1;visibility:visible}
+  .menu{position:fixed;z-index:70;top:0;right:0;height:100dvh;width:min(320px,86vw);
+    background:var(--surface);border-left:1px solid var(--line);
+    transform:translateX(100%);transition:transform .26s cubic-bezier(.32,.72,0,1);
+    display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+  .menu.open{transform:translateX(0)}
+  .menu .mhead{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    height:var(--bar);padding:0 10px 0 20px;border-bottom:1px solid var(--line)}
+  .menu .mhead h2{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--ink-3)}
+  .menu nav{padding:10px 12px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .menu nav a{display:block;padding:15px 14px;border-radius:12px;font-size:17px;font-weight:600;
+    color:var(--ink);text-decoration:none;line-height:1.3}
+  .menu nav a:active{background:var(--accent-soft);color:var(--accent)}
+  @media(hover:hover){.menu nav a:hover{background:var(--soft)}}
+  @media (prefers-reduced-motion:reduce){.menu,.scrim{transition:none}}
+
   /* header */
-  .hero{padding:52px 0 30px}
+  .hero{padding:38px 0 30px}
   .hero .eyebrow{font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--accent);
     text-transform:uppercase;margin-bottom:14px}
   .hero h1{font-size:clamp(34px,7vw,52px);line-height:1.02;font-weight:800}
   .hero .lead{margin-top:16px;color:var(--ink-2);font-size:18px;max-width:56ch}
 
   .facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
-  .fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;flex:1;
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;flex:1;box-shadow:var(--shadow);
     min-width:130px}
   .fact .n{font-size:23px;font-weight:750;line-height:1}
   .fact .l{margin-top:5px;font-size:13px;color:var(--ink-3)}
@@ -72,7 +105,7 @@
 
   /* the route, plain list */
   .overview{margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-    padding:8px 22px}
+    padding:8px 22px;box-shadow:var(--shadow)}
   .stop{display:flex;align-items:baseline;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-2)}
   .stop:last-child{border-bottom:0}
   .stop .mk{flex-shrink:0;width:74px;font-size:13px;font-weight:700;color:var(--ink-3)}
@@ -81,13 +114,15 @@
   .stop .why{margin-left:auto;font-size:14px;color:var(--ink-3);text-align:right}
 
   /* sections */
-  section{margin-top:48px;scroll-margin-top:20px}
-  .sec-h{font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);
-    margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+  section{margin-top:46px;scroll-margin-top:calc(var(--bar) + 14px)}
+  .sec-h{display:flex;align-items:center;gap:12px;font-size:13.5px;font-weight:750;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--ink-2);margin-bottom:18px;padding:13px 18px;
+    background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:var(--r-sm)}
 
   /* day card */
   .day{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 24px 20px;
-    margin-bottom:16px;transition:opacity .25s ease}
+    margin-bottom:16px;box-shadow:var(--shadow);transition:opacity .25s ease}
   .day.done{opacity:.5}
   .day .dhead{display:flex;align-items:flex-start;gap:14px}
   .day .dtag{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.03em;flex-shrink:0;
@@ -117,7 +152,7 @@
 
   /* plain info sections */
   .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;
-    margin-bottom:16px}
+    margin-bottom:16px;box-shadow:var(--shadow)}
   .panel h3{font-size:19px;font-weight:750;margin-bottom:6px}
   .panel p{color:var(--ink-2);font-size:16px}
   .panel ul{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
@@ -176,6 +211,38 @@
 </head>
 <body>
 
+<header class="topbar">
+  <div class="tb">
+    <div class="brand">SEA <span>to</span> CLT <span>Roadbook</span></div>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Switch between day and night">
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.4M12 19.2v2.4M4.2 12H1.8M22.2 12h-2.4M6.5 6.5 4.8 4.8M19.2 19.2l-1.7-1.7M17.5 6.5l1.7-1.7M4.8 19.2l1.7-1.7"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z"/></svg>
+    </button>
+    <button class="iconbtn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<aside class="menu" id="menu" aria-label="Sections" aria-hidden="true">
+  <div class="mhead">
+    <h2>Jump to</h2>
+    <button class="iconbtn" id="menuClose" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg>
+    </button>
+  </div>
+  <nav>
+    <a href="#days">The five days</a>
+    <a href="#checkin">Let people follow along</a>
+    <a href="#showers">Where you shower</a>
+    <a href="#sleeping">Sleeping in the car</a>
+    <a href="#good-to-know">Good to know before you go</a>
+    <a href="#cost">Rough cost</a>
+    <a href="#before-you-leave">Before you leave</a>
+  </nav>
+</aside>
+
 <div class="wrap">
 
   <header class="hero">
@@ -207,7 +274,7 @@
   </header>
 
   <!-- DAYS -->
-  <section>
+  <section id="days">
     <div class="sec-h">The five days</div>
 
     <!-- DAY 1 -->
@@ -315,7 +382,7 @@
   </section>
 
   <!-- FOLLOW ALONG -->
-  <section>
+  <section id="checkin">
     <div class="sec-h">Let people follow along</div>
     <div class="panel track">
       <h3>Check in when you finish a day</h3>
@@ -350,7 +417,7 @@
   </section>
 
   <!-- SHOWERS -->
-  <section>
+  <section id="showers">
     <div class="sec-h">Where you shower</div>
     <div class="panel">
       <h3>Get a Planet Fitness Black Card</h3>
@@ -375,7 +442,7 @@
   </section>
 
   <!-- SLEEPING -->
-  <section>
+  <section id="sleeping">
     <div class="sec-h">Sleeping in the car</div>
     <div class="panel">
       <h3>Use Camp Mode</h3>
@@ -404,7 +471,7 @@
   </section>
 
   <!-- GOOD TO KNOW -->
-  <section>
+  <section id="good-to-know">
     <div class="sec-h">Good to know before you go</div>
     <div class="panel">
       <div class="callout"><p><b>The clock.</b> Driving east you lose 3 hours over the trip. On Days 1, 3,
@@ -431,7 +498,7 @@
   </section>
 
   <!-- MONEY -->
-  <section>
+  <section id="cost">
     <div class="sec-h">Rough cost</div>
     <div class="panel">
       <table class="money">
@@ -447,7 +514,7 @@
   </section>
 
   <!-- CHECKLIST -->
-  <section>
+  <section id="before-you-leave">
     <div class="sec-h">Before you leave</div>
     <div class="panel">
       <ul class="clist" id="clist"></ul>
@@ -468,6 +535,40 @@
   function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
   function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   var CHK='<svg viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  /* day / night toggle */
+  var root=document.documentElement, themeBtn=document.getElementById("themeBtn"),
+      themeMeta=document.querySelector('meta[name="theme-color"]');
+  function applyTheme(t){
+    root.setAttribute("data-theme",t);
+    if(themeMeta)themeMeta.setAttribute("content",t==="dark"?"#0d1015":"#ffffff");
+    if(themeBtn)themeBtn.setAttribute("aria-label",t==="dark"?"Switch to day mode":"Switch to night mode");
+  }
+  applyTheme(root.getAttribute("data-theme")==="dark"?"dark":"light");
+  if(themeBtn)themeBtn.addEventListener("click",function(){
+    var next=root.getAttribute("data-theme")==="dark"?"light":"dark";
+    applyTheme(next);
+    try{localStorage.setItem("sea_clt_theme",next);}catch(e){}
+  });
+
+  /* hamburger menu */
+  var menu=document.getElementById("menu"), scrim=document.getElementById("scrim"),
+      menuBtn=document.getElementById("menuBtn"), menuClose=document.getElementById("menuClose");
+  function setMenu(open){
+    if(!menu)return;
+    menu.classList.toggle("open",open);
+    if(scrim)scrim.classList.toggle("open",open);
+    document.body.classList.toggle("menu-open",open);
+    menu.setAttribute("aria-hidden",open?"false":"true");
+    if(menuBtn)menuBtn.setAttribute("aria-expanded",open?"true":"false");
+  }
+  if(menuBtn)menuBtn.addEventListener("click",function(){setMenu(!menu.classList.contains("open"));});
+  if(menuClose)menuClose.addEventListener("click",function(){setMenu(false);});
+  if(scrim)scrim.addEventListener("click",function(){setMenu(false);});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")setMenu(false);});
+  if(menu)menu.querySelectorAll("nav a").forEach(function(a){
+    a.addEventListener("click",function(){setMenu(false);});
+  });
 
   /* contact + status */
   var CITY=["","Butte, MT","Rapid City, SD","St. Joseph, MO","Lexington, KY","Charlotte, NC"];
