@@ -142,6 +142,23 @@
   .tag.free{background:var(--good-soft);color:var(--good)}
   .tag.now{background:var(--accent-soft);color:var(--accent)}
   .tag.clock{background:var(--warn-soft);color:var(--warn)}
+  .tag.nc{background:var(--good-soft);color:var(--good)}
+  .tag.sc{background:var(--warn-soft);color:var(--warn)}
+  .tag.pick{background:var(--accent);color:#fff}
+
+  /* where-to-live cards */
+  .areas{padding:6px 8px}
+  .area{padding:16px 12px;border-top:1px solid var(--line-2)}
+  .area:first-child{border-top:0}
+  .area.best{background:var(--accent-soft);border-radius:12px;border-top:0;border-left:4px solid var(--accent);
+    padding-left:14px;margin:6px 0}
+  .area .ahead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+  .area .aname{font-size:17.5px;font-weight:750}
+  .area .anote{font-size:14.5px;color:var(--ink-2);line-height:1.55}
+  .area .arent{margin-top:7px;font-size:13.5px;font-weight:700;color:var(--good);font-variant-numeric:tabular-nums}
+  .rule{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 25%,transparent);
+    border-radius:var(--r-sm);padding:14px 16px;margin-top:14px;font-size:14.5px;color:var(--ink);line-height:1.55}
+  .rule b{color:var(--warn)}
 
   footer{margin-top:44px;color:var(--ink-3);font-size:14px;line-height:1.6}
   footer b{color:var(--ink-2)}
@@ -192,6 +209,49 @@
   </header>
 
   <div id="stages"></div>
+
+  <section id="where">
+    <div class="sec-h">Where to live around Charlotte</div>
+    <p class="sec-note">Staying on the NC side keeps your food stamps, license, and car registration all in one
+      state. Renting a room first is the cheapest safe way to start.</p>
+    <div class="panel areas">
+      <div class="area best">
+        <div class="ahead"><span class="aname">Concord &amp; Kannapolis</span>
+          <span class="tag pick">Top pick</span><span class="tag nc">NC</span></div>
+        <p class="anote">About 25 minutes northeast. Newer subdivisions with yards, low crime, rent below the
+          Charlotte median, and full of warehouse and retail jobs that hire fast. Kannapolis is the cheaper
+          of the two and is being rebuilt around its downtown ballpark. Safe, newer, cheap, and near the jobs,
+          all in one place, and it keeps you in NC.</p>
+        <div class="arent">Room ~$600&ndash;900 &middot; 1BR ~$1,100&ndash;1,400</div>
+      </div>
+      <div class="area">
+        <div class="ahead"><span class="aname">Gastonia</span><span class="tag nc">NC</span>
+          <span class="tag">Cheapest</span></div>
+        <p class="anote">West side, about 30 minutes out, the lowest rents in the metro and improving. It is
+          more mixed block by block, so stick to newer developments on the north and east side and check the
+          street on a crime map first.</p>
+        <div class="arent">Room ~$550&ndash;800 &middot; 1BR ~$1,000&ndash;1,300</div>
+      </div>
+      <div class="area">
+        <div class="ahead"><span class="aname">Huntersville &middot; Matthews &middot; South Charlotte</span>
+          <span class="tag nc">NC</span><span class="tag now">Safe, pricier</span></div>
+        <p class="anote">Very safe, clean, newer, family feel. Huntersville is north by Lake Norman, Matthews is
+          southeast, and South Charlotte covers Ballantyne West, Sharon Woods, and Sardis Forest. Great once
+          your paycheck is steady.</p>
+        <div class="arent">Room ~$700&ndash;1,000 &middot; 1BR ~$1,400&ndash;1,800</div>
+      </div>
+      <div class="area">
+        <div class="ahead"><span class="aname">Rock Hill &amp; Fort Mill</span><span class="tag sc">South Carolina</span></div>
+        <p class="anote">Just over the state line to the south. Rock Hill is affordable and reasonably safe,
+          Fort Mill is very safe with top schools but pricier. <b>Only if you are okay being an SC resident</b>,
+          since your DMV, car registration, and food stamps would all switch to South Carolina.</p>
+        <div class="arent">Room ~$600&ndash;900 &middot; 1BR ~$1,150&ndash;1,500</div>
+      </div>
+      <div class="rule"><b>One rule before you sign anywhere.</b> Do not trust a listing photo. Pull up the
+        exact street on a crime map (CMPD's map, or CrimeGrade.org), then drive it once in daylight and once
+        after dark. A cheap place on a bad street is never worth it.</div>
+    </div>
+  </section>
 
   <footer>
     <p><b>Why this order.</b> Sleep, a mailing address, your ID and a bank account come first because
@@ -338,6 +398,11 @@
     navEl.appendChild(a);
   });
   var sep=document.createElement("div"); sep.className="msep"; navEl.appendChild(sep);
+  var whereLink=document.createElement("a"); whereLink.href="#where";
+  whereLink.innerHTML='<span class="mnum" style="background:var(--warn-soft);color:var(--warn)">★</span>Where to live';
+  whereLink.addEventListener("click",function(){setMenu(false);});
+  navEl.appendChild(whereLink);
+  var sep2=document.createElement("div"); sep2.className="msep"; navEl.appendChild(sep2);
   var back=document.createElement("a"); back.href="index.html"; back.className="back"; back.textContent="← Back to roadbook";
   navEl.appendChild(back);
 
