@@ -159,6 +159,23 @@
   .rule{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 25%,transparent);
     border-radius:var(--r-sm);padding:14px 16px;margin-top:14px;font-size:14.5px;color:var(--ink);line-height:1.55}
   .rule b{color:var(--warn)}
+  .tag.plain{background:var(--soft);color:var(--ink-2)}
+
+  /* address directory inside a stage */
+  .places-h{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:750;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--ink-3);margin:20px 4px 8px}
+  .places-h svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .places{padding:4px 8px}
+  .place{padding:15px 12px;border-top:1px solid var(--line-2)}
+  .place:first-child{border-top:0}
+  .place .phead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .place .pname{font-size:16.5px;font-weight:750}
+  .place .prow{display:flex;align-items:center;gap:9px;margin-top:4px;font-size:14.5px}
+  .place .prow svg{width:16px;height:16px;stroke:var(--ink-3);fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .place .prow a{font-weight:600}
+  .place .pnote{margin-top:7px;font-size:13.5px;color:var(--ink-2);line-height:1.5}
 
   footer{margin-top:44px;color:var(--ink-3);font-size:14px;line-height:1.6}
   footer b{color:var(--ink-2)}
@@ -336,7 +353,23 @@
        note:'Get the schedule and the address locked in. First paycheck is the door to everything in Stage 5.'},
       {t:'Set up direct deposit with your bank',
        note:'Give your employer the account from Stage 1 so pay lands automatically. Ask when the first check hits.'}
-     ]},
+     ],
+     places:{heading:"Walk-in staffing offices near you", items:[
+      {name:"PeopleReady", tags:[["Day labor","now"],["Same-day pay","free"]],
+       addr:"5430 N Tryon St, Ste 3, Charlotte, NC 28213", phone:"(704) 596-2588",
+       note:"Walk in Mon–Fri 5:30 AM–6 PM, Sat 6–10 AM. Show up around 5:30 AM for that day’s work."},
+      {name:"Labor Finders", tags:[["Day labor","now"]],
+       addr:"4040 Chesapeake Dr, Charlotte, NC 28216", phone:"(704) 525-6211",
+       note:"Also a South Charlotte office at 336 Yorkshire Dr, 28217."},
+      {name:"Elwood Staffing", tags:[["Warehouse temp-to-hire","plain"]],
+       addr:"820 Tyvola Rd, Ste 100, Charlotte, NC 28217", phone:"(704) 626-1150"},
+      {name:"Express Employment Professionals", tags:[["Temp to full-time","plain"]],
+       addr:"7340 Smith Corners Blvd, Ste 700, Charlotte, NC 28269", phone:"(704) 716-9103",
+       note:"North office above. South office: 818 Tyvola Rd, 28217 · (704) 716-1110."},
+      {name:"NCWorks Career Center", tags:[["Free · government","free"]],
+       addr:"5601 Executive Center Dr, Ste 100, Charlotte, NC 28212", phone:"(704) 566-2870",
+       note:"Free job leads, resume help, even work clothes. Mon–Fri 8 AM–4:30 PM (closed the 3rd Friday)."}
+     ]}},
     {id:"car", title:"Stage 4 · Make the car legal in NC",
      note:"New residents get 60 days to switch over. Keep your current insurance active the entire time, never let it lapse.",
      items:[
@@ -364,7 +397,19 @@
        note:'Get the keys, the lease, and a real address of your own. This is the finish line of the hard part.'},
       {t:'Update your address everywhere',
        note:'License, car registration, insurance, food stamps, bank, and your employer. One afternoon of updates and you are fully set up in NC.'}
-     ]}
+     ],
+     places:{heading:"Where to apply for low-income housing", items:[
+      {name:"INLIVIAN (housing authority)", tags:[["Public housing · Section 8","now"]],
+       addr:"400 East Boulevard, Charlotte, NC 28203", phone:"(704) 336-5183",
+       note:"Apply on their online portal. Waitlists open and close, so get on any open list right away."},
+      {name:"DreamKey Partners", tags:[["Affordable rentals","plain"]],
+       addr:"4601 Charlotte Park Dr, Ste 350, Charlotte, NC 28217", phone:"(704) 342-0933"},
+      {name:"Crisis Assistance Ministry", tags:[["Rent help · free store","free"]],
+       addr:"500-A Spratt St, Charlotte, NC 28206", phone:"(704) 371-3001",
+       note:"Lobby Mon–Fri 9 AM–4 PM. Rent-help appointments Mon–Thu 8 AM–noon, first come. Free furniture and clothing store Tue–Sat 10 AM–4 PM."},
+      {name:"Call 211", tags:[["Live listings","free"]], addr:"", phone:"211",
+       note:"They keep the live master list of open affordable units and rapid-rehousing programs, fresher than any website."}
+     ]}}
   ];
 
   var state=load("nc_settle_v1",{}), stagesEl=document.getElementById("stages"),
@@ -389,7 +434,34 @@
       row.dataset.key=key; row.dataset.stage=st.id;
       panel.appendChild(row);
     });
-    sec.appendChild(panel); stagesEl.appendChild(sec);
+    sec.appendChild(panel);
+
+    /* address directory for this stage */
+    if(st.places){
+      var PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+      var PH='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4.5 6.2 2 2 0 0 1 6.5 4z"/></svg>';
+      var ph=document.createElement("div"); ph.className="places-h"; ph.innerHTML=PIN+st.places.heading;
+      sec.appendChild(ph);
+      var ppanel=document.createElement("div"); ppanel.className="panel places";
+      st.places.items.forEach(function(pl){
+        var card=document.createElement("div"); card.className="place";
+        var tags=(pl.tags||[]).map(function(t){return '<span class="tag '+t[1]+'">'+t[0]+'</span>';}).join(" ");
+        var html='<div class="phead"><span class="pname">'+pl.name+'</span>'+tags+'</div>';
+        if(pl.addr){
+          var maps="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(pl.addr);
+          html+='<div class="prow">'+PIN+'<a href="'+maps+'" target="_blank" rel="noopener">'+pl.addr+'</a></div>';
+        }
+        if(pl.phone){
+          var digits=pl.phone.replace(/[^0-9+]/g,"");
+          html+='<div class="prow">'+PH+'<a href="tel:'+digits+'">'+pl.phone+'</a></div>';
+        }
+        if(pl.note)html+='<div class="pnote">'+pl.note+'</div>';
+        card.innerHTML=html; ppanel.appendChild(card);
+      });
+      sec.appendChild(ppanel);
+    }
+
+    stagesEl.appendChild(sec);
 
     /* menu row */
     var a=document.createElement("a"); a.href="#"+st.id; a.dataset.stage=st.id;
